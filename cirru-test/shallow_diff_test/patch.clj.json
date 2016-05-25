@@ -1,0 +1,18 @@
+[
+  [
+    "ns",
+    "shallow-diff-test.patch",
+    [
+      ":require",
+      [
+        "[]",
+        "shallow-diff.patch",
+        ":refer",
+        [
+          "[]",
+          "patch"
+        ]
+      ]
+    ]
+  ]
+]

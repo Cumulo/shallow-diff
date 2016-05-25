@@ -1,0 +1,14 @@
+[
+  [
+    "ns",
+    "shallow-diff.patch"
+  ],
+  [
+    "defn",
+    "patch",
+    [
+      "x",
+      "delta"
+    ]
+  ]
+]
