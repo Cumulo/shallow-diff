@@ -133,4 +133,5 @@
   (comp
     (watch)
     (transform-cirru)
+    (target)
     (test)))

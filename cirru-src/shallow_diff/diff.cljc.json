@@ -177,17 +177,20 @@
             [
               "next-acc",
               [
-                "assoc",
+                "conj",
                 "acc",
                 [
-                  "conj",
-                  "coord",
-                  "counter"
-                ],
-                [
                   "[]",
-                  ":add",
-                  "cursor"
+                  [
+                    "conj",
+                    "coord",
+                    "counter"
+                  ],
+                  [
+                    "[]",
+                    ":add",
+                    "cursor"
+                  ]
                 ]
               ]
             ]
@@ -234,12 +237,19 @@
             [
               "next-acc",
               [
-                "assoc",
+                "conj",
                 "acc",
                 [
-                  "conj",
-                  "coord",
-                  "counter"
+                  "[]",
+                  [
+                    "conj",
+                    "coord",
+                    "counter"
+                  ],
+                  [
+                    "[]",
+                    ":rm"
+                  ]
                 ]
               ]
             ]
@@ -337,17 +347,20 @@
               [
                 "recur",
                 [
-                  "assoc",
+                  "conj",
                   "acc",
                   [
-                    "conj",
-                    "coord",
-                    "counter"
-                  ],
-                  [
                     "[]",
-                    ":add",
-                    "y1"
+                    [
+                      "conj",
+                      "coord",
+                      "counter"
+                    ],
+                    [
+                      "[]",
+                      ":add",
+                      "y1"
+                    ]
                   ]
                 ],
                 [
@@ -374,16 +387,19 @@
               [
                 "recur",
                 [
-                  "assoc",
+                  "conj",
                   "acc",
                   [
-                    "conj",
-                    "coord",
-                    "counter"
-                  ],
-                  [
                     "[]",
-                    ":rm"
+                    [
+                      "conj",
+                      "coord",
+                      "counter"
+                    ],
+                    [
+                      "[]",
+                      ":rm"
+                    ]
                   ]
                 ],
                 "counter",
@@ -416,15 +432,25 @@
                       "diff",
                       "x1",
                       "y1",
-                      "coord"
+                      [
+                        "conj",
+                        "coord",
+                        "counter"
+                      ]
                     ]
                   ],
                   [
                     "next-acc",
                     [
-                      "merge",
-                      "acc",
-                      "this-diff"
+                      "into",
+                      [
+                        "[]"
+                      ],
+                      [
+                        "concat",
+                        "acc",
+                        "this-diff"
+                      ]
                     ]
                   ]
                 ],
@@ -485,17 +511,20 @@
                   [
                     "recur",
                     [
-                      "assoc",
+                      "conj",
                       "acc",
                       [
-                        "conj",
-                        "coord",
-                        "counter"
-                      ],
-                      [
                         "[]",
-                        ":add",
-                        "y1"
+                        [
+                          "conj",
+                          "coord",
+                          "counter"
+                        ],
+                        [
+                          "[]",
+                          ":add",
+                          "y1"
+                        ]
                       ]
                     ],
                     [
@@ -512,16 +541,19 @@
                   [
                     "recur",
                     [
-                      "assoc",
+                      "conj",
                       "acc",
                       [
-                        "conj",
-                        "coord",
-                        "counter"
-                      ],
-                      [
                         "[]",
-                        ":rm"
+                        [
+                          "conj",
+                          "coord",
+                          "counter"
+                        ],
+                        [
+                          "[]",
+                          ":rm"
+                        ]
                       ]
                     ],
                     "counter",
@@ -551,7 +583,7 @@
     [
       "reduce-vector",
       [
-        "{}"
+        "[]"
       ],
       "0",
       "xs",
@@ -630,7 +662,7 @@
                     "y"
                   ],
                   [
-                    "{}"
+                    "[]"
                   ]
                 ],
                 [
@@ -649,12 +681,15 @@
                     ]
                   ],
                   [
-                    "{}",
-                    "coord",
+                    "[]",
                     [
                       "[]",
-                      ":-",
-                      "cursor"
+                      "coord",
+                      [
+                        "[]",
+                        ":rm",
+                        "cursor"
+                      ]
                     ]
                   ]
                 ],
@@ -674,13 +709,16 @@
                     ]
                   ],
                   [
-                    "{}",
-                    "coord",
+                    "[]",
                     [
                       "[]",
-                      ":+",
-                      "cursor",
-                      "y"
+                      "coord",
+                      [
+                        "[]",
+                        ":add",
+                        "cursor",
+                        "y"
+                      ]
                     ]
                   ]
                 ],
@@ -703,7 +741,13 @@
         ],
         [
           "apply",
-          "merge"
+          "concat"
+        ],
+        [
+          "into",
+          [
+            "[]"
+          ]
         ]
       ]
     ]
@@ -712,82 +756,102 @@
     "defn",
     "diff",
     [
-      "x",
-      "y",
-      "coord"
+      [
+        "x",
+        "y"
+      ],
+      [
+        "diff",
+        "x",
+        "y",
+        [
+          "[]"
+        ]
+      ]
     ],
     [
-      "cond",
       [
-        [
-          "identical?",
-          "x",
-          "y"
-        ],
-        [
-          "{}"
-        ]
+        "x",
+        "y",
+        "coord"
       ],
       [
+        "cond",
         [
-          "and",
           [
-            "=",
-            [
-              "type",
-              "x"
-            ],
-            [
-              "type",
-              "y"
-            ]
+            "identical?",
+            "x",
+            "y"
           ],
           [
-            "vector?",
-            "x"
+            "[]"
           ]
         ],
         [
-          "diff-vector",
-          "x",
-          "y",
-          "coord"
-        ]
-      ],
-      [
-        [
-          "and",
           [
-            "=",
+            "and",
             [
-              "type",
-              "x"
+              "=",
+              [
+                "type",
+                "x"
+              ],
+              [
+                "type",
+                "y"
+              ]
             ],
             [
-              "type",
-              "y"
+              "vector?",
+              "x"
             ]
           ],
           [
-            "map?",
-            "x"
+            "diff-vector",
+            "x",
+            "y",
+            "coord"
           ]
         ],
         [
-          "diff-map",
-          "x",
-          "y",
-          "coord"
-        ]
-      ],
-      [
-        ":else",
+          [
+            "and",
+            [
+              "=",
+              [
+                "type",
+                "x"
+              ],
+              [
+                "type",
+                "y"
+              ]
+            ],
+            [
+              "map?",
+              "x"
+            ]
+          ],
+          [
+            "diff-map",
+            "x",
+            "y",
+            "coord"
+          ]
+        ],
         [
-          "coord",
+          ":else",
           [
             "[]",
-            ":set!",
-            "y"
+            [
+              "[]",
+              "coord",
+              [
+                "[]",
+                ":set!",
+                "y"
+              ]
+            ]
           ]
         ]
       ]
