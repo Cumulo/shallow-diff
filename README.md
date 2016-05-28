@@ -55,7 +55,7 @@ Start editor:
 
 ```bash
 npm i -g cirru-light-editor
-cle cirru-src/ cirru-test/
+cle cirru/
 # open browser http://repo.cirru.org/light-editor/
 ```
 
