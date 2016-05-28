@@ -184,8 +184,7 @@
                   "coord",
                   [
                     "[]",
-                    ":insert",
-                    "counter",
+                    ":append",
                     "cursor"
                   ]
                 ]

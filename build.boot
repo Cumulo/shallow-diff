@@ -8,9 +8,9 @@
                  [binaryage/devtools        "0.5.2"       :scope "test"]
                  [mrmcc3/boot-rev           "0.1.0"       :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
-                 [mvc-works/hsl             "0.1.2"]
-                 [mvc-works/respo           "0.1.22"]
-                 [mvc-works/respo-spa       "0.1.3"]]
+                 [mvc-works/hsl             "0.1.2"       :scope "test"]
+                 [mvc-works/respo           "0.1.22"      :scope "test"]
+                 [mvc-works/respo-spa       "0.1.3"       :scope "test"]]
 
   :repositories #(conj % ["clojars" {:url "https://clojars.org/repo/"}]))
 
@@ -23,7 +23,7 @@
          '[adzerk.boot-test   :refer :all]
          '[clojure.java.io    :as    io])
 
-(def +version+ "0.1.0")
+(def +version+ "0.1.1")
 
 (task-options!
   pom {:project     'cumulo/shallow-diff
@@ -33,7 +33,8 @@
        :scm         {:url "https://github.com/Cumulo/shallow-diff"}
        :license     {"MIT" "http://opensource.org/licenses/mit-license.php"}}
 
-  test {:namespaces '#{shallow-diff-test.diff shallow-diff-test.patch}})
+  test {:namespaces '#{shallow-diff-test.diff shallow-diff-test.patch
+      shallow-diff-test.round-trip}})
 
 (deftask compile-cirru []
   (set-env!
