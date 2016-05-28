@@ -181,14 +181,11 @@
                 "acc",
                 [
                   "[]",
-                  [
-                    "conj",
-                    "coord",
-                    "counter"
-                  ],
+                  "coord",
                   [
                     "[]",
-                    ":add",
+                    ":insert",
+                    "counter",
                     "cursor"
                   ]
                 ]
@@ -241,14 +238,11 @@
                 "acc",
                 [
                   "[]",
-                  [
-                    "conj",
-                    "coord",
-                    "counter"
-                  ],
+                  "coord",
                   [
                     "[]",
-                    ":rm"
+                    ":remove",
+                    "counter"
                   ]
                 ]
               ]
@@ -351,14 +345,11 @@
                   "acc",
                   [
                     "[]",
-                    [
-                      "conj",
-                      "coord",
-                      "counter"
-                    ],
+                    "coord",
                     [
                       "[]",
-                      ":add",
+                      ":insert",
+                      "counter",
                       "y1"
                     ]
                   ]
@@ -391,14 +382,11 @@
                   "acc",
                   [
                     "[]",
-                    [
-                      "conj",
-                      "coord",
-                      "counter"
-                    ],
+                    "coord",
                     [
                       "[]",
-                      ":rm"
+                      ":remove",
+                      "counter"
                     ]
                   ]
                 ],
@@ -515,14 +503,11 @@
                       "acc",
                       [
                         "[]",
-                        [
-                          "conj",
-                          "coord",
-                          "counter"
-                        ],
+                        "coord",
                         [
                           "[]",
-                          ":add",
+                          ":insert",
+                          "counter",
                           "y1"
                         ]
                       ]
@@ -545,14 +530,11 @@
                       "acc",
                       [
                         "[]",
-                        [
-                          "conj",
-                          "coord",
-                          "counter"
-                        ],
+                        "coord",
                         [
                           "[]",
-                          ":rm"
+                          ":remove",
+                          "counter"
                         ]
                       ]
                     ],
@@ -822,7 +804,7 @@
                       "coord",
                       [
                         "[]",
-                        ":rm",
+                        ":drop",
                         "cursor"
                       ]
                     ]
