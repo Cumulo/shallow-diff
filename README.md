@@ -65,6 +65,12 @@ Run tests:
 boot watch-test
 ```
 
+Get Clojure code by compiling:
+
+```bash
+boot compile-cirru
+```
+
 ### License
 
 MIT

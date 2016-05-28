@@ -37,9 +37,7 @@
       shallow-diff-test.round-trip}})
 
 (deftask compile-cirru []
-  (set-env!
-    :source-paths #{"cirru-src"})
-  (cirru-sepal :paths ["cirru-src"]))
+  (cirru-sepal :paths ["cirru-src" "cirru-test"]))
 
 (defn use-text [x] {:attrs {:innerHTML x}})
 (defn html-dsl [data fileset]
