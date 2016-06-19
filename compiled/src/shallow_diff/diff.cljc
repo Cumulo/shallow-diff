@@ -30,7 +30,7 @@
                                                 next-acc
                                                 (inc counter)
                                                 xs
-                                                (rest ys)
+                                                (subvec ys 1)
                                                 coord))
     (and (> (count xs) 0) (= (count ys) 0)) (let 
                                               [next-acc
@@ -41,19 +41,19 @@
                                               (recur
                                                 next-acc
                                                 counter
-                                                (rest xs)
+                                                (subvec xs 1)
                                                 ys
                                                 coord))
     :else (let [x1 (first xs)
                 y1 (first ys)
-                x1-remains? (shallow-contains? (rest ys) x1)
-                y1-existed? (shallow-contains? (rest xs) y1)]
+                x1-remains? (shallow-contains? (subvec ys 1) x1)
+                y1-existed? (shallow-contains? (subvec xs 1) y1)]
             (cond
               (= x1 y1) (recur
                           acc
                           (inc counter)
-                          (rest xs)
-                          (rest ys)
+                          (subvec xs 1)
+                          (subvec ys 1)
                           coord)
               (and x1-remains? (not y1-existed?)) (recur
                                                     (conj
@@ -64,7 +64,7 @@
                                                         y1]])
                                                     (inc counter)
                                                     xs
-                                                    (rest ys)
+                                                    (subvec ys 1)
                                                     coord)
               (and (not x1-remains?) y1-existed?) (recur
                                                     (conj
@@ -73,7 +73,7 @@
                                                        [:remove
                                                         counter]])
                                                     counter
-                                                    (rest xs)
+                                                    (subvec xs 1)
                                                     ys
                                                     coord)
               (and (not x1-remains?) (not y1-existed?)) (let 
@@ -94,22 +94,26 @@
                                                             next-acc
                                                             (inc
                                                               counter)
-                                                            (rest xs)
-                                                            (rest ys)
+                                                            (subvec
+                                                              xs
+                                                              1)
+                                                            (subvec
+                                                              ys
+                                                              1)
                                                             coord))
-              :else (let [xi (shallow-index-of (rest ys) x1)
-                          yi (shallow-index-of (rest xs) y1)]
+              :else (let [xi (shallow-index-of (subvec ys 1) x1)
+                          yi (shallow-index-of (subvec xs 1) y1)]
                       (if (<= xi yi)
                         (recur
                           (conj acc [coord [:insert counter y1]])
                           (inc counter)
                           xs
-                          (rest ys)
+                          (subvec ys 1)
                           coord)
                         (recur
                           (conj acc [coord [:remove counter]])
                           counter
-                          (rest xs)
+                          (subvec xs 1)
                           ys
                           coord)))))))
 

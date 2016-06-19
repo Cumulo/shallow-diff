@@ -1,6 +1,6 @@
 
 (ns shallow-diff.core
-  (:require [respo-spa.core :refer [render]]
+  (:require [respo.core :refer [render]]
             [shallow-diff.component.container :refer [comp-container]]))
 
 (defonce store-ref (atom 0))

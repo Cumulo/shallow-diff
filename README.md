@@ -5,6 +5,7 @@ Shallow Diff
 A simplified diff/patch solution learning from immutable-diff/patch.
 
 Values are compared with `identical?` for performace in special scenarios.
+There's still much room for optimizations in vector diffing.
 
 ### Usage
 
