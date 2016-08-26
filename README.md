@@ -10,7 +10,7 @@ There's still much room for optimizations in vector diffing.
 ### Usage
 
 ```clojure
-[shallow-diff "0.1.1"]
+[cumulo/shallow-diff "0.1.1"]
 ```
 
 ```clojure
@@ -25,28 +25,43 @@ For other types of primitives, it generates `set!` to replace.
 
 Format `[coord [op arg1 args2]]`, examples:
 
-* `[[1   ]  [:add     2  "x"]]`
-* `[[:map]  [:remove  1     ]]`
+```clojure
+[[1   ]  [:add     2  "x"]]
+
+[[:map]  [:remove  1     ]]
+```
 
 For values:
 
-* `[:set! a-val]`
+```clojure
+[:set! a-val]
+```
 
 For hash maps:
 
-* `[:add  a-key a-val]`
-* `[:drop a-key      ]`
+```clojure
+[:add  a-key a-val]
+
+[:drop a-key      ]
+```
 
 For vectors:
 
-* `[:insert a-key a-val]`
-* `[:remove a-key      ]`
-* `[:append a-val      ]`
+```clojure
+[:insert a-key a-val]
+
+[:remove a-key      ]
+
+[:append a-val      ]
+```
 
 For hash sets:
 
-* `[:include a-val]`
-* `[:exclude a-val]`
+```cljure
+[:include a-val]
+
+[:exclude a-val]
+```
 
 ### Develop
 
