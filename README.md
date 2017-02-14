@@ -65,27 +65,7 @@ For hash sets:
 
 ### Develop
 
-Clojure code is generated from JSON with Cirru toolchains.
-
-Start editor:
-
-```bash
-npm i -g cirru-light-editor
-cle cirru/
-# open browser http://repo.cirru.org/light-editor/
-```
-
-Run tests:
-
-```bash
-boot watch-test
-```
-
-Get Clojure code by compiling:
-
-```bash
-boot compile-cirru
-```
+https://github.com/mvc-works/stack-workflow
 
 ### License
 
