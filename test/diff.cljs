@@ -1,6 +1,6 @@
 
 (ns shallow-diff-test.diff
-  (:require [clojure.test :refer :all]
+  (:require [cljs.test :refer-macros [deftest is run-tests]]
             [shallow-diff.diff :refer [diff]]))
 
 (deftest id-test (is (= [] (diff {} {}))))
@@ -11,7 +11,7 @@
   map-test
   (is
     (=
-      [[[] [:add :c 2]] [[:b] [:set! 0]]]
+      [[[:b] [:set! 0]] [[] [:add :c 2]]]
       (diff {:b 2, :a 1} {:c 2, :b 0, :a 1}))))
 
 (deftest
@@ -63,13 +63,15 @@
       [[[:vec 0] [:set! 0]]
        [[:vec 1] [:set! 4]]
        [[:vec] [:append 4]]
-       [[:set] [:include 0]]
        [[:set] [:exclude 1]]
-       [[:set] [:include 4]]
        [[:set] [:exclude 2]]
-       [[:map] [:add :c 3]]
+       [[:set] [:include 0]]
+       [[:set] [:include 4]]
        [[:map] [:drop :b]]
-       [[:map :a] [:set! 0]]]
+       [[:map :a] [:set! 0]]
+       [[:map] [:add :c 3]]]
       (diff
         {:vec [1 2 3], :set (hash-set 1 2 3), :map {:b 2, :a 1}}
         {:vec [0 4 3 4], :set (hash-set 0 3 4), :map {:c 3, :a 0}}))))
+
+(run-tests)

@@ -63,6 +63,14 @@ For hash sets:
 [:exclude a-val]
 ```
 
+### Test
+
+```bash
+lumo -Kc $boot_deps:src/ -i test/diff.cljs
+lumo -Kc $boot_deps:src/ -i test/patch.cljs
+lumo -Kc $boot_deps:src/ -i test/round_trip.cljs
+```
+
 ### Develop
 
 https://github.com/mvc-works/stack-workflow

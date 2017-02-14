@@ -1,6 +1,6 @@
 
 (ns shallow-diff-test.round-trip
-  (:require [clojure.test :refer :all]
+  (:require [cljs.test :refer-macros [deftest is run-tests]]
             [shallow-diff.diff :refer [diff]]
             [shallow-diff.patch :refer [patch]]))
 
@@ -16,7 +16,7 @@
   round-set-test
   (let [x1 (hash-set 1 2)
         x2 (hash-set 1 3)
-        changes [[[] [:include 3]] [[] [:exclude 2]]]]
+        changes [[[] [:exclude 2]] [[] [:include 3]]]]
     (is (= changes (diff x1 x2)))
     (is (= x2 (patch x1 changes)))))
 
@@ -37,3 +37,5 @@
   (let [x1 [1 2 3] x2 [1 2] changes [[[] [:remove 2]]]]
     (is (= changes (diff x1 x2)))
     (is (= x2 (patch x1 changes)))))
+
+(run-tests)

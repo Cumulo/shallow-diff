@@ -1,6 +1,6 @@
 
 (ns shallow-diff-test.patch
-  (:require [clojure.test :refer :all]
+  (:require [cljs.test :refer-macros [deftest is run-tests]]
             [shallow-diff.patch :refer [patch]]))
 
 (deftest map-add-test (is (= {:a 1} (patch {} [[[] [:add :a 1]]]))))
@@ -33,3 +33,5 @@
 (deftest
   deep-insert-test
   (is (= [[[1 4 2]]] (patch [[[1 2]]] [[[0 0] [:insert 1 4]]]))))
+
+(run-tests)
