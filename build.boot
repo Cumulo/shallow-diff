@@ -11,7 +11,6 @@
                   [cirru/boot-stack-server   "0.1.30"      :scope "test"]
                   [binaryage/devtools        "0.9.1"       :scope "test"]
                   [fipp                      "0.6.9"       :scope "test"]
-                  [cumulo/shallow-diff       "0.1.1"       :scope "test"]
                   [mvc-works/hsl             "0.1.2"       :scope "test"]
                   [respo                     "0.3.37"      :scope "test"]])
 

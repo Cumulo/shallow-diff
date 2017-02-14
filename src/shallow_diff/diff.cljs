@@ -1,30 +1,26 @@
 
 (ns shallow-diff.diff )
 
+(declare diff-values)
+
 (declare diff-map)
-
-(declare diff-vector)
-
-(declare diff)
 
 (declare reduce-vector)
 
-(defn shallow-contains? [xs x]
-  (if (= (count xs) 0) false (if (identical? (first xs) x) true (recur (rest xs) x))))
+(declare diff-vector)
 
-(defn diff-set [xs ys coord]
+(defn diff-set [xs ys coord collect!]
   (let [all-keys (into (hash-set) (concat xs ys))]
-    (->> all-keys
-         (map
-          (fn [cursor]
-            (let [exists? (contains? ys cursor), existed? (contains? xs cursor)]
-              (cond
-                (and exists? existed?) []
-                (and exists? (not existed?)) [[coord [:include cursor]]]
-                (and (not exists?) existed?) [[coord [:exclude cursor]]]
-                :else []))))
-         (apply concat)
-         (into []))))
+    (doseq [cursor all-keys]
+      (let [exists? (contains? ys cursor), existed? (contains? xs cursor)]
+        (cond
+          (and exists? existed?) nil
+          (and exists? (not existed?)) (collect! [coord [:include cursor]])
+          (and (not exists?) existed?) (collect! [coord [:exclude cursor]])
+          :else nil)))
+    nil))
+
+(defn =type? [x y] (= (type x) (type y)))
 
 (defn shallow-index-of
   ([xs x] (shallow-index-of 0 xs x))
@@ -34,71 +30,74 @@
      (= (first xs) x) counter
      :else (recur (inc counter) (rest xs) x))))
 
-(defn reduce-vector [acc counter xs ys coord]
+(defn shallow-contains? [xs x]
+  (if (= (count xs) 0) false (if (identical? (first xs) x) true (recur (rest xs) x))))
+
+(defn diff-vector [xs ys coord collect!] (reduce-vector collect! 0 xs ys coord))
+
+(defn reduce-vector [collect! counter xs ys coord]
   (cond
-    (and (= (count xs) 0) (= (count ys) 0)) acc
-    (and (= (count xs) 0) (> (count ys) 0))
-      (let [cursor (first ys), next-acc (conj acc [coord [:append cursor]])]
-        (recur next-acc (inc counter) xs (subvec ys 1) coord))
-    (and (> (count xs) 0) (= (count ys) 0))
-      (let [next-acc (conj acc [coord [:remove counter]])]
-        (recur next-acc counter (subvec xs 1) ys coord))
+    (and (empty? xs) (empty? ys)) nil
+    (and (empty? xs) (not (empty? ys)))
+      (let [cursor (first ys)]
+        (collect! [coord [:append cursor]])
+        (recur collect! (inc counter) xs (subvec ys 1) coord))
+    (and (not (empty? xs)) (empty? ys))
+      (do
+       (collect! [coord [:remove counter]])
+       (recur collect! counter (subvec xs 1) ys coord))
     :else
       (let [x1 (first xs)
             y1 (first ys)
             x1-remains? (shallow-contains? (subvec ys 1) x1)
             y1-existed? (shallow-contains? (subvec xs 1) y1)]
         (cond
-          (= x1 y1) (recur acc (inc counter) (subvec xs 1) (subvec ys 1) coord)
+          (= x1 y1) (recur collect! (inc counter) (subvec xs 1) (subvec ys 1) coord)
           (and x1-remains? (not y1-existed?))
-            (recur
-             (conj acc [coord [:insert counter y1]])
-             (inc counter)
-             xs
-             (subvec ys 1)
-             coord)
+            (do
+             (collect! [coord [:insert counter y1]])
+             (recur collect! (inc counter) xs (subvec ys 1) coord))
           (and (not x1-remains?) y1-existed?)
-            (recur (conj acc [coord [:remove counter]]) counter (subvec xs 1) ys coord)
+            (do
+             (collect! [coord [:remove counter]])
+             (recur collect! counter (subvec xs 1) ys coord))
           (and (not x1-remains?) (not y1-existed?))
-            (let [this-diff (diff x1 y1 (conj coord counter))
-                  next-acc (into [] (concat acc this-diff))]
-              (recur next-acc (inc counter) (subvec xs 1) (subvec ys 1) coord))
+            (do
+             (diff-values x1 y1 (conj coord counter) collect!)
+             (recur collect! (inc counter) (subvec xs 1) (subvec ys 1) coord))
           :else
             (let [xi (shallow-index-of (subvec ys 1) x1)
                   yi (shallow-index-of (subvec xs 1) y1)]
               (if (<= xi yi)
-                (recur
-                 (conj acc [coord [:insert counter y1]])
-                 (inc counter)
-                 xs
-                 (subvec ys 1)
-                 coord)
-                (recur (conj acc [coord [:remove counter]]) counter (subvec xs 1) ys coord)))))))
+                (do
+                 (collect! [coord [:insert counter y1]])
+                 (recur collect! (inc counter) xs (subvec ys 1) coord))
+                (do
+                 (collect! [coord [:remove counter]])
+                 (recur collect! counter (subvec xs 1) ys coord))))))))
 
-(defn diff
-  ([x y] (diff x y []))
-  ([x y coord]
-   (cond
-     (identical? x y) []
-     (and (= (type x) (type y)) (set? x)) (diff-set x y coord)
-     (and (= (type x) (type y)) (vector? x)) (diff-vector x y coord)
-     (and (= (type x) (type y)) (map? x)) (diff-map x y coord)
-     :else [[coord [:set! y]]])))
-
-(defn diff-vector [xs ys coord] (reduce-vector [] 0 xs ys coord))
-
-(defn diff-map [xs ys coord]
+(defn diff-map [xs ys coord collect!]
   (let [all-keys (into (hash-set) (concat (keys xs) (keys ys)))]
-    (->> all-keys
-         (map
-          (fn [cursor]
-            (let [x (get xs cursor), y (get ys cursor)]
-              (cond
-                (identical? x y) []
-                (and (some? x) (not (some? y))) [[coord [:drop cursor]]]
-                (and (not (some? x)) (some? y)) [[coord [:add cursor y]]]
-                :else (diff x y (conj coord cursor))))))
-         (apply concat)
-         (into []))))
+    (doseq [cursor all-keys]
+      (let [x (get xs cursor), y (get ys cursor)]
+        (cond
+          (identical? x y) nil
+          (and (some? x) (nil? y)) (collect! [coord [:drop cursor]])
+          (and (nil? x) (some? y)) (collect! [coord [:add cursor y]])
+          :else (diff-values x y (conj coord cursor) collect!))))
+    nil))
+
+(defn diff-values [x y coord collect!]
+  (cond
+    (identical? x y) []
+    (and (=type? x y) (set? x)) (diff-set x y coord collect!)
+    (and (=type? x y) (vector? x)) (diff-vector x y coord collect!)
+    (and (=type? x y) (map? x)) (diff-map x y coord collect!)
+    :else (collect! [coord [:set! y]])))
+
+(defn diff [x y]
+  (let [ref-changes (atom []), collect! (fn [x] (swap! ref-changes conj x))]
+    (diff-values x y [] collect!)
+    @ref-changes))
 
 (declare diff)

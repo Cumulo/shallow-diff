@@ -1,3 +1,4 @@
 
 /target/
 .lumo_cache
+tasks/class-path.sh
