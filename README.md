@@ -10,7 +10,7 @@ There's still much room for optimizations in vector diffing.
 ### Usage
 
 ```clojure
-[cumulo/shallow-diff "0.1.2"]
+[cumulo/shallow-diff "0.1.3"]
 ```
 
 ```clojure
